@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>love letter for my baby</title>
+        <style>
+            @charset "UTF-8";
+            @import url("https://frills.dev/css/abstracts/_variables.css");
+            @import url("https://frills.dev/css/components/_logo.css");
+            :root {
+            --envelope-x: 300px;
+            --envelope-y: 200px;
+            --envelope-bg: Moccasin;
+            --envelope-shadow: Peru;
+            --letter-x: 250px;
+            --letter-y: calc(250px - 1rem - 10px);
+            --letter-bg: AntiqueWhite;
+            --letter-shadow: BurlyWood;
+            --letter-text: #180d07;
+            --letter-font: Arial, Helvetica, sans-serif;
+            --letter-button-text: darkred;
+            --heart-bg: darkred;
+            --heart-text: white;
+            }
+
+            @media (min-width: 650px) {
+            :root {
+                --envelope-x: 600px;
+                --envelope-y: 400px;
+                --letter-x: 500px;
+                --letter-y: calc(400px - 1rem - 10px);
+            }
+            }
+            html {
+            font-size: 20px;
+            }
+
+            body {
+            background-color: darkred;
+            }
+
+            .cssletter {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+            -webkit-user-select: none;
+            margin: 24dvh 0;
+            }
+
+            .envelope {
+            position: relative;
+            width: var(--envelope-x);
+            height: var(--envelope-y);
+            background: var(--envelope-bg);
+            box-shadow: inset 0 0 30px -5px var(--envelope-shadow), 0 0 50vw 0 #540000;
+            }
+
+            .envelope::before {
+            content: "˚ʚ❤︎ɞ˚";
+            font-size: 5rem;
+            color: white;
+            position: absolute;
+            left: 50%;
+            top: 30%;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: soft-light;
+            }
+
+            .envelope-flap {
+            width: 100%;
+            height: 71%;
+            position: absolute;
+            top: 0;
+            z-index: 3;
+            overflow: hidden;
+            transition: 0.6s linear all;
+            transform-origin: top;
+            pointer-events: all;
+            }
+
+            .envelope-folds {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 2;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            }
+
+            .envelope-flap::before,
+            .envelope-left::before,
+            .envelope-right::before,
+            .envelope-bottom::before {
+            content: "";
+            transform: rotate(45deg);
+            background: var(--envelope-bg);
+            box-shadow: 0 0 30px -5px var(--envelope-shadow);
+            width: 100%;
+            aspect-ratio: 1;
+            display: block;
+            position: absolute;
+            top: 60%;
+            }
+
+            .envelope-flap::before {
+            border-radius: 5rem;
+            bottom: 30px;
+            border-radius: 5rem;
+            top: auto;
+            }
+
+            @media (min-width: 650px) {
+            .envelope-flap::before {
+                bottom: 100px;
+            }
+            }
+            .envelope-left::before {
+            top: 10%;
+            left: -65%;
+            }
+
+            .envelope-right::before {
+            top: 10%;
+            right: -65%;
+            }
+
+            .envelope-bottom::before {
+            top: 60%;
+            border-radius: 5rem;
+            }
+
+            .heart {
+            z-index: 4;
+            position: relative;
+            box-shadow: none;
+            border: none;
+            width: 70px;
+            aspect-ratio: 1;
+            background: radial-gradient(circle at 60% 65%, var(--heart-bg) 64%, #0000 65%) top left/50% 50%, radial-gradient(circle at 40% 65%, var(--heart-bg) 64%, #0000 65%) top right/50% 50%, conic-gradient(from -45deg at 50% 85.5%, var(--heart-bg) 90deg, #0000 0) bottom/100% 50%;
+            background-repeat: no-repeat;
+            left: 50%;
+            top: 70%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            }
+
+            @media (min-width: 650px) {
+            .heart {
+                width: 150px;
+            }
+            }
+            .heart::before {
+            content: "";
+            display: block;
+            position: absolute;
+            width: 70px;
+            aspect-ratio: 1;
+            background: radial-gradient(circle at 60% 65%, #ffffff26 64%, #0000 65%) top left/50% 50%, radial-gradient(circle at 40% 65%, #ffffff26 64%, #0000 65%) top right/50% 50%, conic-gradient(from -45deg at 50% 85.5%, #ffffff26 90deg, #0000 0) bottom/100% 50%;
+            background-repeat: no-repeat;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            transition: 0.3s ease all;
+            z-index: -1;
+            }
+
+            @media (min-width: 650px) {
+            .heart::before {
+                width: 150px;
+            }
+            }
+            .heart:hover,
+            .heart:active,
+            .heart:focus {
+            transform: translate(-50%, -50%);
+            background-color: transparent;
+            color: var(--heart-text);
+            }
+
+            .heart:hover::before,
+            .heart:active::before,
+            .heart:focus::before {
+            transform: translate(-50%, -50%) scale(0.8);
+            }
+
+            .heart-text {
+            transform: translateY(-10px);
+            display: block;
+            color: var(--heart-text);
+            font-size: 1.5rem;
+            font-family: var(--letter-font);
+            }
+
+            .envelope.active * {
+            pointer-events: none;
+            }
+
+            .envelope.active .envelope-flap {
+            transform: rotateX(-180deg) translateY(0);
+            perspective: 10px;
+            }
+
+            .envelope.active .envelope-flap::before {
+            box-shadow: inset 0 0 30px -5px var(--envelope-shadow);
+            }
+
+            .envelope.active .heart {
+            display: none;
+            }
+
+            .letter {
+            box-sizing: border-box;
+            font-family: var(--letter-font);
+            font-size: 1rem;
+            line-height: 1.1;
+            background-color: var(--letter-bg);
+            color: var(--letter-text);
+            width: var(--letter-x);
+            height: var(--letter-y);
+            user-select: none;
+            box-shadow: inset 0 0 20px -5px var(--letter-shadow);
+            padding: 3rem 1rem 1rem;
+            margin: 0;
+            cursor: grab;
+            position: absolute;
+            top: 1rem;
+            overflow: auto;
+            text-align: center;
+            border: 0;
+            }
+
+            .letter:active {
+            cursor: grabbing;
+            }
+
+            .letter.center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            }
+
+            .letter cite {
+            font-size: 1.25rem;
+            color: var(--letter-text);
+            margin-top: 1rem;
+            }
+
+            .letter cite::before {
+            content: none;
+            }
+
+            .letter:nth-child(even) {
+            transform: skew(-2deg) translateY(-4px);
+            }
+
+            .letter:nth-child(odd) {
+            transform: skew(2deg) translateY(4px);
+            }
+
+            @media (min-width: 650px) {
+            .letter {
+                font-size: 1.3rem;
+            }
+            }
+            .closeLetter {
+            font-size: 0 !important;
+            position: absolute;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: none;
+            box-shadow: none;
+            padding: 0;
+            border: 0;
+            }
+
+            .closeLetter::before {
+            content: "˚ʚ❤︎ɞ˚";
+            font-size: 1.5rem !important;
+            font-family: var(--letter-font);
+            color: var(--letter-button-text);
+            text-align: center;
+            }
+
+            .closeLetter:hover,
+            .closeLetter:active,
+            .closeLetter:focus {
+            background-color: transparent;
+            color: var(--letter-text);
+            transform: translateX(-50%);
+            padding: 0;
+            margin: 0;
+            }
+
+            .closeLetter:hover::before,
+            .closeLetter:active::before,
+            .closeLetter:focus::before {
+            content: "xXx";
+            }
+
+            /* Attribution */
+            :root {
+            --bodybg: darkred;
+            }
+
+            footer {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            z-index: 10000000;
+            }
+
+            footer svg {
+            width: 100px;
+            }
+
+            .memories-section {
+            position: relative;
+            z-index: 20;
+            isolation: isolate;
+            height: auto;
+            flex-direction: column;
+            gap: 1.75rem;
+            margin: 12rem 0 6rem;
+            }
+
+            .memories-title {
+            position: relative;
+            z-index: 5;
+            margin: 0;
+            color: AntiqueWhite;
+            font-family: var(--letter-font);
+            font-size: clamp(2rem, 6vw, 3.2rem);
+            text-align: center;
+            text-shadow: 0 2px 8px #000;
+            }
+
+            .memory-envelope {
+            --envelope-x: min(82vw, 420px);
+            --envelope-y: min(55vw, 280px);
+            flex: 0 0 auto;
+            }
+
+            .memory-gallery {
+            display: none;
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            overflow: visible;
+            }
+
+            .memory-envelope.active .memory-gallery {
+            display: block;
+            }
+
+            .memory-envelope.active .envelope-flap,
+            .memory-envelope.active .envelope-folds {
+            pointer-events: none;
+            }
+
+            .memory-photo {
+            appearance: none;
+            position: absolute;
+            left: 50%;
+            top: 40%;
+            width: 82%;
+            height: 90%;
+            margin: 0;
+            padding: 3px;
+            border: 0;
+            box-sizing: border-box;
+            background: AntiqueWhite;
+            box-shadow: 0 2px 6px #350000;
+            cursor: default;
+            font: inherit;
+            touch-action: none;
+            }
+
+            .memory-photo.in-envelope {
+            transform: translate(-50%, -50%) translate(var(--stack-x), var(--stack-y)) rotate(var(--stack-angle));
+            pointer-events: none;
+            }
+
+            .memory-photo.is-next,
+            .memory-envelope.active .memory-photo.in-envelope.is-next {
+            z-index: 10;
+            cursor: pointer;
+            pointer-events: auto;
+            }
+
+            .memory-photo.is-next:focus-visible {
+            outline: 3px solid white;
+            outline-offset: 3px;
+            }
+
+            .memory-photo:nth-child(1) {
+            --stack-x: 0px;
+            --stack-y: 0px;
+            --stack-angle: -1deg;
+            z-index: 7;
+            }
+
+            .memory-photo:nth-child(2) {
+            --stack-x: 5px;
+            --stack-y: -4px;
+            --stack-angle: 1deg;
+            z-index: 6;
+            }
+
+            .memory-photo:nth-child(3) {
+            --stack-x: -5px;
+            --stack-y: -8px;
+            --stack-angle: -2deg;
+            z-index: 5;
+            }
+
+            .memory-photo:nth-child(4) {
+            --stack-x: 7px;
+            --stack-y: -12px;
+            --stack-angle: 2deg;
+            z-index: 4;
+            }
+
+            .memory-photo:nth-child(5) {
+            --stack-x: -7px;
+            --stack-y: -16px;
+            --stack-angle: -1deg;
+            z-index: 3;
+            }
+
+            .memory-photo:nth-child(6) {
+            --stack-x: 4px;
+            --stack-y: -20px;
+            --stack-angle: 1deg;
+            z-index: 2;
+            }
+
+            .memory-photo:nth-child(7) {
+            --stack-x: -3px;
+            --stack-y: -24px;
+            --stack-angle: -2deg;
+            z-index: 1;
+            }
+
+            .memory-photo.extracted {
+            position: fixed;
+            z-index: 100;
+            cursor: grab;
+            pointer-events: auto;
+            transition: left 550ms ease, top 550ms ease, transform 550ms ease;
+            }
+
+            .memory-photo.extracted:active {
+            cursor: grabbing;
+            }
+
+            .memory-photo img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #101a3c;
+            pointer-events: none;
+            }
+
+            @media (max-width: 649px) {
+            .memories-section {
+                margin: 8rem 0 4rem;
+            }
+
+            }
+                    </style>
+    </head>
+    <body>
+        <section class="cssletter">
+        <div class="envelope">
+            <button class="heart" id="openEnvelope" aria-label="Open Envelope">
+            <span class="heart-text">Open</span>
+            </button>
+            <div class="envelope-flap"></div>
+            <div class="envelope-folds">
+            <div class="envelope-left"></div>
+            <div class="envelope-right"></div>
+            <div class="envelope-bottom"></div>
+            </div>
+        </div>
+        <div class="letters">
+
+            <blockquote class="letter center" id="1" tabindex="0" style="left: 390px;">
+            <button class="closeLetter" title="Close Meowish's letter">Close Meowish's letter</button>
+            <p>Hi baby, iloveyou im so thankfull dahil nakilala kita dati akala ko hindi moko magugustuhan ganon HHAHAHAH kase apaka lakas mag kag ng baby ko.</p>
+            <cite>Raven</cite>
+            </blockquote>
+
+            <blockquote class="letter center" id="2" tabindex="0" style="left: 390px;">
+            <button class="closeLetter" title="Close Meowish's letter">Close Meowish's letter</button>
+            <p>baby yk sobrang saya ko kapag nakakalaro kita kapag naglalaro tayo nag bobonding tayo ganon sobrang happy ako and sana ganon ka rin po kahit na natatalo tayo masaya parin tayo</p>
+            <cite>Raven</cite>
+            </blockquote>
+
+            <blockquote class="letter center" id="3" tabindex="0" style="left: 390px;">
+            <button class="closeLetter" title="Close Meowish's letter">Close Meowish's letter</button>
+            <p>iloveyouu soo much baby sana magustuhan mo tong ginawa ko for you i do love you sobraaaaa hinding hindi po kita iiwanan hindi rin po ako susuko walang mag iiwanan okayy.</p>
+            <cite>Raven</cite>
+            </blockquote>
+
+            <blockquote class="letter center" id="4" tabindex="0" style="left: 390px;">
+            <button class="closeLetter" title="Close Meowish's letter">Close Meowish's letter</button>
+            <p>thankyou baby for making me happy always :) i hope you know how lucky i am thankyou baby cuz you make me feel loved, important, and syempre you lagi mopo ako binibigyan ng assurance and more thankyou soo much baby iloveyouuu soo much, im the luckiest man on earth kase nakilala kita MWAMWAMWA</p>
+            <cite>Raven</cite>
+            </blockquote>
+        </div>
+        </section>
+
+        <section class="cssletter memories-section" aria-labelledby="memories-title">
+            <h2 class="memories-title" id="memories-title">Memories with you :&gt;</h2>
+            <div class="envelope memory-envelope">
+                <button class="heart" id="openMemoriesEnvelope" aria-label="Open our memories">
+                    <span class="heart-text">Open</span>
+                </button>
+                <div class="memory-gallery" aria-label="Photos of our memories">
+                    <button class="memory-photo in-envelope is-next" type="button">
+                        <img src="img/memory-01.png" alt="Us together in a classic game lobby">
+                    </button>
+                    <button class="memory-photo in-envelope" type="button">
+                        <img src="img/memory-02.png" alt="A match history showing a victory">
+                    </button>
+                    <button class="memory-photo in-envelope" type="button">
+                        <img src="img/memory-03.png" alt="Another page of match history">
+                    </button>
+                    <button class="memory-photo in-envelope" type="button">
+                        <img src="img/memory-04.png" alt="Us together in a game lobby">
+                    </button>
+                    <button class="memory-photo in-envelope" type="button">
+                        <img src="img/memory-05.png" alt="A moment from one of our matches">
+                    </button>
+                    <button class="memory-photo in-envelope" type="button">
+                        <img src="img/memory-06.png" alt="A hero selection screen">
+                    </button>
+                    <button class="memory-photo in-envelope" type="button">
+                        <img src="img/memory-07.png" alt="Us together in another classic lobby">
+                    </button>
+                </div>
+                <div class="envelope-flap"></div>
+                <div class="envelope-folds">
+                    <div class="envelope-left"></div>
+                    <div class="envelope-right"></div>
+                    <div class="envelope-bottom"></div>
+                </div>
+            </div>
+        </section>
+
+        <script>
+            const letters = document.querySelectorAll(".letter");
+            const lettersContainer = document.querySelector(".letters");
+            let zIndexCounter = 10;
+
+            const shuffleArray = (array) => {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            };
+
+            const shuffledThings = Array.from(letters);
+            shuffleArray(shuffledThings);
+
+            shuffledThings.forEach((letter) => {
+            lettersContainer.appendChild(letter);
+            const center = document.querySelector(".cssletter").offsetWidth / 2 - letter.offsetWidth / 2;
+            letter.style.left = `${center}px`;
+
+            function isOverflown(element) {
+                return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
+            }
+
+            if (!isOverflown(letter)) {
+                letter.classList.add("center");
+            }
+            let offsetX, offsetY;
+            letter.addEventListener("mousedown", (e) => {
+                if (e.target.tagName !== "BUTTON") {
+                const rect = e.target.getBoundingClientRect();
+
+                letter.style.position = "fixed";
+                letter.style.left = `${rect.left}px`;
+                letter.style.top = `${rect.top}px`;
+
+                offsetX = e.clientX - rect.left;
+                offsetY = e.clientY - rect.top;
+
+                letter.style.zIndex = zIndexCounter++;
+                const moveAt = (posX, posY) => {
+                    letter.style.left = `${posX - offsetX}px`;
+                    letter.style.top = `${posY - offsetY}px`;
+                };
+                const onMouseMove = (moveEvent) => moveAt(moveEvent.clientX, moveEvent.clientY);
+                const onMouseUp = () => {
+                    document.removeEventListener("mousemove", onMouseMove);
+                    document.removeEventListener("mouseup", onMouseUp);
+                };
+                document.addEventListener("mousemove", onMouseMove);
+                document.addEventListener("mouseup", onMouseUp);
+                }
+            });
+            });
+            document.querySelector("#openEnvelope").addEventListener("click", () => {
+            document.querySelector(".envelope").classList.add("active");
+            });
+            document.querySelector("#openMemoriesEnvelope").addEventListener("click", (event) => {
+            event.currentTarget.closest(".envelope").classList.add("active");
+            });
+            const memoryGallery = document.querySelector(".memory-gallery");
+            memoryGallery.addEventListener("click", (event) => {
+                const photo = event.target.closest(".memory-photo.is-next.in-envelope");
+                if (!photo) return;
+
+                const rect = photo.getBoundingClientRect();
+                const extractedCount = 7 - memoryGallery.querySelectorAll(".memory-photo.in-envelope").length;
+                photo.classList.remove("in-envelope", "is-next");
+                photo.classList.add("extracted");
+                document.body.appendChild(photo);
+                photo.style.left = `${rect.left}px`;
+                photo.style.top = `${rect.top}px`;
+                photo.style.width = `${rect.width}px`;
+                photo.style.height = `${rect.height}px`;
+                photo.style.transform = "none";
+                photo.style.zIndex = String(zIndexCounter++);
+
+                const nextPhoto = memoryGallery.querySelector(".memory-photo.in-envelope");
+                if (nextPhoto) nextPhoto.classList.add("is-next");
+
+                const maxLeft = Math.max(8, window.innerWidth - rect.width - 8);
+                const targetLeft = Math.max(8, Math.min(maxLeft, rect.left + ((extractedCount % 3) - 1) * 32));
+                const targetTop = Math.max(8, rect.top - rect.height * 0.8 + Math.floor(extractedCount / 3) * 28);
+                requestAnimationFrame(() => {
+                    photo.style.left = `${targetLeft}px`;
+                    photo.style.top = `${targetTop}px`;
+                    photo.style.transform = `rotate(${extractedCount % 2 === 0 ? -2 : 2}deg)`;
+                });
+            });
+            document.addEventListener("pointerdown", (event) => {
+                const photo = event.target.closest(".memory-photo.extracted");
+                if (!photo) return;
+
+                event.preventDefault();
+                const rect = photo.getBoundingClientRect();
+                const offsetX = event.clientX - rect.left;
+                const offsetY = event.clientY - rect.top;
+                photo.setPointerCapture(event.pointerId);
+                photo.style.zIndex = String(zIndexCounter++);
+
+                const movePhoto = (moveEvent) => {
+                    photo.style.left = `${moveEvent.clientX - offsetX}px`;
+                    photo.style.top = `${moveEvent.clientY - offsetY}px`;
+                };
+                const stopDragging = () => {
+                    photo.removeEventListener("pointermove", movePhoto);
+                    photo.removeEventListener("pointerup", stopDragging);
+                    photo.removeEventListener("pointercancel", stopDragging);
+                };
+
+                photo.addEventListener("pointermove", movePhoto);
+                photo.addEventListener("pointerup", stopDragging);
+                photo.addEventListener("pointercancel", stopDragging);
+            });
+            const closeButtons = document.querySelectorAll(".closeLetter");
+            closeButtons.forEach((button) => {
+            button.addEventListener("click", (e) => {
+                e.preventDefault();
+                const letter = e.target.closest(".letter");
+                if (letter) {
+                letter.style.display = "none";
+                }
+            });
+            });
+        </script>
+    </body>
+</html>
